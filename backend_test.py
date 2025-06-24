@@ -284,13 +284,15 @@ def test_get_my_courses(token):
     """Test getting enrolled courses"""
     response = make_request("get", "/my-courses", token=token)
     
-    if response.get("status_code") == 200 and isinstance(response, list):
-        test_results.add_result("Get My Courses", True, {"count": len(response), "status_code": response.get("status_code")})
-        return True
-    else:
-        error = f"Failed to get enrolled courses. Status code: {response.get('status_code')}, Response: {response}"
-        test_results.add_result("Get My Courses", False, response, error)
-        return False
+    if response.get("status_code") == 200:
+        courses = response.get("courses", response)
+        if isinstance(courses, list):
+            test_results.add_result("Get My Courses", True, {"count": len(courses), "status_code": response.get("status_code")})
+            return True
+    
+    error = f"Failed to get enrolled courses. Status code: {response.get('status_code')}, Response: {response}"
+    test_results.add_result("Get My Courses", False, response, error)
+    return False
 
 def test_update_progress(course_id, token):
     """Test updating course progress"""
