@@ -221,13 +221,16 @@ def test_get_all_courses():
     """Test getting all courses"""
     response = make_request("get", "/courses")
     
-    if response.get("status_code") == 200 and isinstance(response, list):
-        test_results.add_result("Get All Courses", True, {"count": len(response), "status_code": response.get("status_code")})
-        return True
-    else:
-        error = f"Failed to get courses. Status code: {response.get('status_code')}, Response: {response}"
-        test_results.add_result("Get All Courses", False, response, error)
-        return False
+    if response.get("status_code") == 200:
+        # Check if the response contains a list of courses
+        courses = response.get("courses", response)
+        if isinstance(courses, list):
+            test_results.add_result("Get All Courses", True, {"count": len(courses), "status_code": response.get("status_code")})
+            return True
+    
+    error = f"Failed to get courses. Status code: {response.get('status_code')}, Response: {response}"
+    test_results.add_result("Get All Courses", False, response, error)
+    return False
 
 def test_get_course(course_id):
     """Test getting a specific course"""
