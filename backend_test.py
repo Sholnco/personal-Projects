@@ -12,8 +12,11 @@ admin_credentials = {
     "password": "admin123"
 }
 
+# Generate a unique email for the student
+import uuid
+unique_id = str(uuid.uuid4())[:8]
 student_data = {
-    "email": "student@example.com",
+    "email": f"student_{unique_id}@example.com",
     "password": "Student123!",
     "name": "Test Student",
     "role": "student"
