@@ -122,15 +122,18 @@ backend:
 
   - task: "Course Management CRUD"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
         - working: "NA"
           agent: "main"
           comment: "Implemented complete CRUD operations for courses with admin-only access, categories, and video links"
+        - working: true
+          agent: "testing"
+          comment: "Successfully tested course creation, retrieval, update, and deletion. Admin-only access is properly enforced. Course data is correctly stored and retrieved."
 
   - task: "Student Enrollment System"
     implemented: true
