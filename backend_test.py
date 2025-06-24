@@ -116,11 +116,13 @@ def make_request(method: str, endpoint: str, data: Optional[Dict[str, Any]] = No
         # Try to parse JSON response
         try:
             result = response.json()
+            # If result is a list, wrap it in a dict
+            if isinstance(result, list):
+                result = {"data": result, "status_code": response.status_code}
+            else:
+                result["status_code"] = response.status_code
         except json.JSONDecodeError:
-            result = {"text": response.text}
-        
-        # Add status code to result
-        result["status_code"] = response.status_code
+            result = {"text": response.text, "status_code": response.status_code}
         
         return result
     except requests.RequestException as e:
