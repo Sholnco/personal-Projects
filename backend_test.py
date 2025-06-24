@@ -285,10 +285,9 @@ def test_get_my_courses(token):
     response = make_request("get", "/my-courses", token=token)
     
     if response.get("status_code") == 200:
-        courses = response.get("courses", response)
-        if isinstance(courses, list):
-            test_results.add_result("Get My Courses", True, {"count": len(courses), "status_code": response.get("status_code")})
-            return True
+        courses = response.get("data", [])
+        test_results.add_result("Get My Courses", True, {"count": len(courses), "status_code": response.get("status_code")})
+        return True
     
     error = f"Failed to get enrolled courses. Status code: {response.get('status_code')}, Response: {response}"
     test_results.add_result("Get My Courses", False, response, error)
