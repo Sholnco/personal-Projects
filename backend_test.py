@@ -336,13 +336,15 @@ def test_get_contact_forms(token):
     """Test getting all contact forms"""
     response = make_request("get", "/contact", token=token)
     
-    if response.get("status_code") == 200 and isinstance(response, list):
-        test_results.add_result("Get Contact Forms", True, {"count": len(response), "status_code": response.get("status_code")})
-        return True
-    else:
-        error = f"Failed to get contact forms. Status code: {response.get('status_code')}, Response: {response}"
-        test_results.add_result("Get Contact Forms", False, response, error)
-        return False
+    if response.get("status_code") == 200:
+        forms = response.get("forms", response)
+        if isinstance(forms, list):
+            test_results.add_result("Get Contact Forms", True, {"count": len(forms), "status_code": response.get("status_code")})
+            return True
+    
+    error = f"Failed to get contact forms. Status code: {response.get('status_code')}, Response: {response}"
+    test_results.add_result("Get Contact Forms", False, response, error)
+    return False
 
 def test_student_get_contact_forms(token):
     """Test student trying to get contact forms (should fail)"""
